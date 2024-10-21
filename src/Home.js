@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BlogList from './Bloglist';
 
 const Home = () => {
@@ -15,6 +15,17 @@ const Home = () => {
     setBlogs(newBlogs);
   }
 
+  useEffect(() => {
+    // useEffect hook runs a function every render of the component
+    // Used for things like fetching data or communication with a
+    // sort of authentication service. Those are called side effects
+    // in React.
+    // The state is affected and that triggers a rerender which triggers
+    // the function in useEffect to run which changes the state again
+    // triggering a rerender again etc - LOOP
+    console.log("RUN USE EFFECT")
+  });
+  
   return ( 
     <div className="home">
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
