@@ -5,6 +5,7 @@ const Home = () => {
   // set initial value to null and we will update it by data fetched
   // using setBlogs function
   const [blogs, setBlogs] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // const [name, setName] = useState('Dante');
 
@@ -16,12 +17,14 @@ const Home = () => {
   // }
 
   useEffect(() => {
-    fetch('http://localhost:8000/blogs')
+    setTimeout(() => {
+      fetch('http://localhost:8000/blogs')
       .then((res) => res.json())
       .then((data) => {
         setBlogs(data);
-      })
-
+        setIsLoading(false);
+      });
+    }, 1000);
   }, []);
 
   // useEffect(() => {
@@ -41,6 +44,7 @@ const Home = () => {
     <div className="home">
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
       {/* pass the props in Home.js */}
+      {isLoading && <div>Loading...</div> }
       {blogs && <BlogList blogs={blogs} title="All blogs!"/>}
       {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'Xander')} title="Xander's blogs!" /> */}
       {/* <button onClick={() => setName('Wendy')}>Change Name</button> */}
