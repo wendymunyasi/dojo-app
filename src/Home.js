@@ -8,12 +8,12 @@ const Home = () => {
 
   // const [name, setName] = useState('Dante');
 
-  const handleDelete = (id) => {
-    // This doesn't change the original data but it returns a new filtered
-    // array based on the original data
-    const newBlogs = blogs.filter((blog) => blog.id !== id);
-    setBlogs(newBlogs);
-  }
+  // const handleDelete = (id) => {
+  //   // This doesn't change the original data but it returns a new filtered
+  //   // array based on the original data
+  //   const newBlogs = blogs.filter((blog) => blog.id !== id);
+  //   setBlogs(newBlogs);
+  // }
 
   useEffect(() => {
     fetch('http://localhost:8000/blogs')
@@ -41,7 +41,7 @@ const Home = () => {
     <div className="home">
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
       {/* pass the props in Home.js */}
-      {blogs && <BlogList blogs={blogs} title="All blogs!" handleDelete={handleDelete}/>}
+      {blogs && <BlogList blogs={blogs} title="All blogs!"/>}
       {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'Xander')} title="Xander's blogs!" /> */}
       {/* <button onClick={() => setName('Wendy')}>Change Name</button> */}
       {/* <p>{name}</p> */}
