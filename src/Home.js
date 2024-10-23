@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react';
 import BlogList from './Bloglist';
 
 const Home = () => {
-  const [blogs, setBlogs] = useState([
-    { title: 'My new website', body: 'lorem ipsum...', author: 'Xander', id: 1 },
-    { title: 'Welcome party!', body: 'lorem ipsum...', author: 'Wolfe', id: 2 },
-    { title: 'Web dev resources', body: 'lorem ipsum...', author: 'Xander', id: 3 },
-  ]);
+  // set initial value to null and we will update it by data fetched
+  // using setBlogs function
+  const [blogs, setBlogs] = useState(null);
 
   // const [name, setName] = useState('Dante');
 
@@ -16,6 +14,15 @@ const Home = () => {
     const newBlogs = blogs.filter((blog) => blog.id !== id);
     setBlogs(newBlogs);
   }
+
+  useEffect(() => {
+    fetch('http://localhost:8000/blogs')
+      .then((res) => res.json())
+      .then((data) => {
+        setBlogs(data);
+      })
+
+  }, []);
 
   // useEffect(() => {
     // useEffect hook runs a function every render of the component
@@ -34,7 +41,7 @@ const Home = () => {
     <div className="home">
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
       {/* pass the props in Home.js */}
-      <BlogList blogs={blogs} title="All blogs!" handleDelete={handleDelete}/>
+      {blogs && <BlogList blogs={blogs} title="All blogs!" handleDelete={handleDelete}/>}
       {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'Xander')} title="Xander's blogs!" /> */}
       {/* <button onClick={() => setName('Wendy')}>Change Name</button> */}
       {/* <p>{name}</p> */}
