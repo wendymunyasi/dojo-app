@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import BlogList from './Bloglist';
+import useFetch from './useFetch';
 
 const Home = () => {
   // set initial value to null and we will update it by data fetched
   // using setBlogs function
-  const [blogs, setBlogs] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // const [name, setName] = useState('Dante');
 
@@ -16,28 +14,10 @@ const Home = () => {
   //   const newBlogs = blogs.filter((blog) => blog.id !== id);
   //   setBlogs(newBlogs);
   // }
+  const {data, isLoading, error} = useFetch('http://localhost:8000/blogs')
+  // destructure the above props from useFetch
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch('http://localhost:8000/blogs')
-        .then((res) => {
-          if (!res.ok) {
-            throw Error('Could not fetch data');
-            // The error is caught by the catch block below
-          }
-          return res.json()
-        })
-        .then((data) => {
-          setBlogs(data);
-          setIsLoading(false);
-          setError(null); // set it to null when we have data
-        })
-        .catch((err) => {
-          setIsLoading(false); // set it to false when there is an error
-          setError(err.message);
-        });
-    }, 1000); // fire after 1 second/ display loading for 1 s
-  }, []);
+
 
   // useEffect(() => {
     // useEffect hook runs a function every render of the component
@@ -58,7 +38,7 @@ const Home = () => {
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
       {/* pass the props in Home.js */}
       {isLoading && <div>Loading...</div> }
-      {blogs && <BlogList blogs={blogs} title="All blogs!"/>}
+      {data && <BlogList blogs={data} title="All blogs!"/>}
       {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'Xander')} title="Xander's blogs!" /> */}
       {/* <button onClick={() => setName('Wendy')}>Change Name</button> */}
       {/* <p>{name}</p> */}
