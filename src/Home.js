@@ -6,6 +6,7 @@ const Home = () => {
   // using setBlogs function
   const [blogs, setBlogs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // const [name, setName] = useState('Dante');
 
@@ -19,12 +20,23 @@ const Home = () => {
   useEffect(() => {
     setTimeout(() => {
       fetch('http://localhost:8000/blogs')
-      .then((res) => res.json())
-      .then((data) => {
-        setBlogs(data);
-        setIsLoading(false);
-      });
-    }, 1000);
+        .then((res) => {
+          if (!res.ok) {
+            throw Error('Could not fetch data');
+            // The error is caught by the catch block below
+          }
+          return res.json()
+        })
+        .then((data) => {
+          setBlogs(data);
+          setIsLoading(false);
+          setError(null); // set it to null when we have data
+        })
+        .catch((err) => {
+          setIsLoading(false); // set it to false when there is an error
+          setError(err.message);
+        });
+    }, 1000); // fire after 1 second/ display loading for 1 s
   }, []);
 
   // useEffect(() => {
@@ -42,6 +54,7 @@ const Home = () => {
 
   return (
     <div className="home">
+      {error && <div>{error}</div>}  {/*output error if it exists*/}
       {/* Create a prop called handleDelete and set it equal to handleDelete function */}
       {/* pass the props in Home.js */}
       {isLoading && <div>Loading...</div> }
