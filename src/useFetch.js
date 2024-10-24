@@ -13,8 +13,11 @@ const useFetch = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+                              // JS function
+
     setTimeout(() => {
-      fetch(url)
+      fetch(url, {signal: abortController.signal})
         .then((res) => {
           if (!res.ok) {
             throw Error('Could not fetch data');
@@ -28,11 +31,20 @@ const useFetch = (url) => {
           setError(null); // set it to null when we have data
         })
         .catch((err) => {
-          setIsLoading(false); // set it to false when there is an error
-          setError(err.message);
+          if (err.name === 'AbortError') { // don't update state if error
+            console.log('Fetch aborted'); // is an AbortError
+          } else {
+            setIsLoading(false); // set it to false when there is an error
+            setError(err.message);
+          }
         });
     }, 1000); // fire after 1 second/ display loading for 1 s
+
+    return () => abortController.abort();  // This is a clean up function,
+    // that returns when the component using useFetch hook unmounts
+
   }, [url]); // pass url as dependency so that when it changes the useEffect reruns
+
   return { // return value is an object - can be a string, array like
     // useState, or bool etc
     data,
@@ -42,5 +54,3 @@ const useFetch = (url) => {
 }
 
 export default useFetch;
-
-
