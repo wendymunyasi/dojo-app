@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const BlogList = (props) => {
   const blogs  = props.blogs;
   const title = props.title;
@@ -12,8 +14,11 @@ const BlogList = (props) => {
       <h2>{title}</h2>
       {blogs.map((blog) => (
         <div className="blog-preview" key={blog.id}>
-          <h2>{blog.title}</h2>
-          <p>Written by {blog.author}.</p>
+          <Link to={`/blogs/${blog.id}`}>
+            <h2>{blog.title}</h2>
+            <p>Written by {blog.author}.</p>
+          </Link>
+
           {/* Define a function that will be called when the button is clicked
           and pass the blog.id as a parameter
           Declare the function in Home.js because that is where the state
