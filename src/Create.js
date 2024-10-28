@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [author, setAuthor] = useState('Trizah');
   const [isLoading, setIsLoading] = useState(false);
+  const history = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault(); // prevents page from refreshing on submit
@@ -19,6 +21,8 @@ const Create = () => {
     }).then(() => {
       console.log("New blog created!")
       setIsLoading(false); // FALSE when done submitting a blog
+      // history(-1); // navigate back to previous page
+      history('/'); // navigate back to homepage
     })
   }
 
